@@ -1,0 +1,34 @@
+{
+  "id": "FEAT-001",
+  "type": "refactor",
+  "description": "Core Design System & CSS Architecture Overhaul: Replace dark cinematic theme with clean, minimal, professional design system. Change CSS variables from dark (#050811) to white/light (#FFFFFF, #F8F9FA) backgrounds, dark text (#1A1A1A), and single ocean blue accent (#0EA5E9). Remove neon effects, 3D animations, excessive gradients. Establish consistent card styles, button styles, form field styles, typography scale, and spacing system.",
+  "status": "completed",
+  "steps": [
+    "Read src/index.css and identify all dark theme CSS variables (--color-bg-deep, --color-bg-navy, --color-accent-teal, etc.)",
+    "Replace CSS variables with new light theme: --color-bg-primary: #FFFFFF, --color-bg-secondary: #F8F9FA, --color-text-primary: #1A1A1A, --color-text-secondary: #4B5563, --color-accent: #0EA5E9, --color-border: #E5E7EB",
+    "Update html and body background-color from #050811 to #FFFFFF",
+    "Remove all dark Leaflet theme overrides (.leaflet-popup-content-wrapper dark styles, .map-tiles-dark filter) and replace with light theme styles (white popups, light borders, no invert filter)",
+    "Remove custom animations (animate-float, animate-pulse-glow) or simplify to subtle transitions only",
+    "Remove custom scrollbar dark styling or replace with light gray scrollbar",
+    "Define consistent card utility class pattern in CSS or document Tailwind classes: bg-white border border-gray-200 rounded-2xl shadow-sm",
+    "Define consistent button primary style: bg-blue-500 text-white px-6 py-3 rounded-xl hover:bg-blue-600 transition-colors",
+    "Define consistent form field style: bg-white border border-gray-300 rounded-lg px-4 py-2.5 focus:border-blue-500 focus:ring-2 focus:ring-blue-100",
+    "Update font imports if necessary (keep existing Google Fonts or use system fonts)",
+    "Document new color palette in index.css comments for reference"
+  ],
+  "acceptance_criteria": [
+    "src/index.css has new CSS variables with white backgrounds and dark text",
+    "All dark theme CSS removed (no #050811, #14b8a6 neon colors remain)",
+    "Leaflet map styles updated to light theme with proper attribution visible",
+    "Running npm run lint passes without errors",
+    "Running npm run dev shows a white page background instead of dark"
+  ],
+  "verification": [
+    "npm run lint",
+    "npm run dev and open localhost:3000 in browser",
+    "Inspect page background color in DevTools (should be #FFFFFF or #F8F9FA, not #050811)",
+    "Scroll page and verify no neon glowing effects or excessive animations"
+  ],
+  "blocked_reason": null,
+  "findings": "Successfully replaced dark theme (#050811) with clean light theme (white #FFFFFF and #F8F9FA backgrounds, dark text #1A1A1A, ocean blue accent #0EA5E9). Removed all neon effects (teal #14b8a6, cyan #06b6d4), dark Leaflet map filter (.map-tiles-dark), and floating/pulse-glow animations. Updated Leaflet map styles to light theme with white popups, light borders, and proper attribution. Documented complete color system in CSS comments. Build and lint pass successfully. Note: Components still use old dark Tailwind classes (bg-slate-900, text-slate-400, etc.) which will need updating in subsequent features."
+}

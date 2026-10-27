@@ -1,0 +1,42 @@
+{
+  "id": "FEAT-006",
+  "type": "feat",
+  "description": "PWA (Progressive Web App) - Make app installable with service worker, offline support for current itinerary and map tiles, and install prompt.",
+  "status": "pending",
+  "steps": [
+    "1. Create public/manifest.json with app metadata: name 'TravelMind AI', short_name 'TravelMind', start_url '/', display 'standalone', theme_color '#3b82f6', icons at 192x192 and 512x512 sizes, categories ['travel', 'lifestyle'].",
+    "2. Create placeholder icon files public/icon-192.png and public/icon-512.png (can use simple colored squares with 'TM' text initially, or generate from logo).",
+    "3. Add <link rel='manifest' href='/manifest.json'> to index.html <head> section.",
+    "4. Create public/sw.js service worker with: install event that caches static assets (/, /offline.html, icons); fetch event with network-first strategy for navigation, cache-first for map tiles (tile.openstreetmap.org URLs), network-first for other requests with cache fallback; activate event that cleans old caches.",
+    "5. Create public/offline.html simple fallback page with 'You are offline. Some features may be unavailable.' message and styling matching the app.",
+    "6. Create src/serviceWorkerRegistration.ts with register() function that registers /sw.js on window load, and unregister() function. Register returns promise that resolves when SW is ready.",
+    "7. Call register() in src/main.tsx after ReactDOM.createRoot(...).render(...).",
+    "8. Create src/utils/offlineCache.ts with: cacheCurrentItinerary(itinerary) that stores itinerary JSON in Cache API under key '/current-itinerary'; getCachedItinerary() that retrieves it.",
+    "9. Call cacheCurrentItinerary in TripPlanner after successfully generating a trip.",
+    "10. Create src/hooks/useInstallPrompt.ts that listens for beforeinstallprompt event, stores deferred prompt, and exposes promptInstall() function and isInstallable boolean.",
+    "11. Create src/components/InstallBanner.tsx that shows at top of page when isInstallable is true. Display 'Install TravelMind AI' with Install button that calls promptInstall(). Dismissible with localStorage flag.",
+    "12. Add InstallBanner to src/App.tsx, positioned at top of page."
+  ],
+  "acceptance_criteria": [
+    "App is installable on mobile devices (Add to Home Screen)",
+    "Service worker caches static assets and serves offline fallback",
+    "Map tiles are cached and visible offline after initial load",
+    "Current itinerary available offline after generation",
+    "Install prompt banner appears for eligible users (desktop Chrome, mobile browsers)",
+    "Clicking Install button triggers native install prompt",
+    "Offline page displays when navigation fails without network",
+    "TypeScript lint passes (npm run lint)"
+  ],
+  "verification": [
+    "npm run lint - TypeScript strict mode passes",
+    "npm run build - production build succeeds",
+    "Manual: Open app in Chrome, open DevTools > Application > Manifest, verify manifest loads correctly",
+    "Manual: Open DevTools > Application > Service Workers, verify sw.js is registered and activated",
+    "Manual: Generate a trip, then go offline (DevTools > Network > Offline), refresh page, verify offline.html displays",
+    "Manual: With trip generated, go offline, verify map tiles that were previously viewed still display",
+    "Manual: On desktop Chrome (not localhost), verify install banner appears or ⊕ icon in address bar",
+    "Manual: Click install, verify app installs and opens in standalone window"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

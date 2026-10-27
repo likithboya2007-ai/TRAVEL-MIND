@@ -1,0 +1,163 @@
+{
+  "complete": true,
+  "name": "stabilize-backend-and-fixes",
+  "description": "Stabilize TravelMind AI backend architecture, add authentication/security, fix logic bugs, and improve tooling",
+  "items": [
+    {
+      "id": "1.1",
+      "title": "Create shared handler modules (api/_lib/chat.ts and api/_lib/routing.ts)",
+      "description": "Create unified Groq chat and routing handlers with token verification and rate limiting",
+      "done": true
+    },
+    {
+      "id": "1.2",
+      "title": "Update server.js to use shared handlers",
+      "description": "Refactor server.js to use api/_lib handlers",
+      "done": true
+    },
+    {
+      "id": "1.3",
+      "title": "Update api/chat.ts and create api/routing.ts serverless functions",
+      "description": "Create serverless functions that use shared handlers",
+      "done": true
+    },
+    {
+      "id": "1.4",
+      "title": "Remove broken Gemini code and dependency",
+      "description": "Remove @google/genai imports and ensure Groq is used everywhere",
+      "done": true
+    },
+    {
+      "id": "2.1",
+      "title": "Create rate limiter (api/_lib/rateLimiter.ts)",
+      "description": "In-memory rate limiter: 20 chat/10min, 60 routing/10min per user",
+      "done": true
+    },
+    {
+      "id": "2.2",
+      "title": "Create validation schemas (api/_lib/schemas.ts)",
+      "description": "Zod schemas for chat (2000 char limit, 20 msg history) and routing validation",
+      "done": true
+    },
+    {
+      "id": "2.3",
+      "title": "Update aiCopilotService.ts and routingService.ts to send auth tokens",
+      "description": "Add Authorization: Bearer header with Supabase JWT",
+      "done": true
+    },
+    {
+      "id": "2.4",
+      "title": "Configure CORS allowlist from ALLOWED_ORIGINS env var",
+      "description": "Replace * with comma-separated origins from env",
+      "done": true
+    },
+    {
+      "id": "3.1",
+      "title": "Create database migration (migrations/001_saved_trips.sql)",
+      "description": "Create saved_trips table with RLS policies",
+      "done": true
+    },
+    {
+      "id": "3.2",
+      "title": "Create savedTripsService.ts",
+      "description": "Service for Supabase saved trips CRUD operations",
+      "done": true
+    },
+    {
+      "id": "3.3",
+      "title": "Implement localStorage migration in App.tsx",
+      "description": "One-time migration of saved trips from localStorage to Supabase on login",
+      "done": true
+    },
+    {
+      "id": "3.4",
+      "title": "Fix duplicate TripExpense interface in supabase.ts",
+      "description": "Remove duplicate interface definition",
+      "done": true
+    },
+    {
+      "id": "4.1",
+      "title": "Fix attraction repetition bug in plannerLogic.ts",
+      "description": "Never repeat attractions; add 'Free time' blocks when pool exhausted",
+      "done": true
+    },
+    {
+      "id": "4.2",
+      "title": "Fix time slot calculation bug in plannerLogic.ts",
+      "description": "Compute consistent start/end times, prevent overlaps",
+      "done": true
+    },
+    {
+      "id": "4.3",
+      "title": "Fix travellers count bug (use input.travellers)",
+      "description": "Use input.travellers instead of GROUP_SIZE_MAP for calculations",
+      "done": true
+    },
+    {
+      "id": "4.4",
+      "title": "Fix accommodation cost scaling (rooms = ceil(travellers/2))",
+      "description": "Scale accommodation cost by number of rooms needed",
+      "done": true
+    },
+    {
+      "id": "4.5",
+      "title": "Remove false geographic clustering insight",
+      "description": "Remove unimplemented insight, add TODO comment",
+      "done": true
+    },
+    {
+      "id": "5.1",
+      "title": "Fix Google Maps Place ID issue in linkGeneratorService.ts",
+      "description": "Use query=lat,lng instead of query_place_id=lat,lng",
+      "done": true
+    },
+    {
+      "id": "5.2",
+      "title": "Create toast system (ToastContext.tsx and Toast.tsx)",
+      "description": "Toast provider and component with success/error/warning/info variants",
+      "done": true
+    },
+    {
+      "id": "5.3",
+      "title": "Replace all alert() calls with toast notifications",
+      "description": "Replace alerts throughout the app with toast system",
+      "done": true
+    },
+    {
+      "id": "6.1",
+      "title": "Install and configure Vitest",
+      "description": "Add Vitest, create vitest.config.ts, add test scripts",
+      "done": true
+    },
+    {
+      "id": "6.2",
+      "title": "Convert existing tests to Vitest",
+      "description": "Convert plannerLogic, weatherService, searchServices tests from node:test to Vitest",
+      "done": true
+    },
+    {
+      "id": "6.3",
+      "title": "Create GitHub Actions CI workflow",
+      "description": "Add .github/workflows/ci.yml running lint, test, build",
+      "done": true
+    },
+    {
+      "id": "6.4",
+      "title": "Rename package to travelmind-ai in package.json",
+      "description": "Update name, version, description, add repository/author/license",
+      "done": true
+    },
+    {
+      "id": "6.5",
+      "title": "Clean up project structure",
+      "description": "Move markdown files to docs/archive/, delete dist/ and .aistudio/, update .gitignore",
+      "done": true
+    },
+    {
+      "id": "6.6",
+      "title": "Rewrite README.md and update .env.example",
+      "description": "Comprehensive README with features, architecture, env vars, setup instructions",
+      "done": true
+    }
+  ]
+}

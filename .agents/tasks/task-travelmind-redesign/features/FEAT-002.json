@@ -1,0 +1,38 @@
+{
+  "id": "FEAT-002",
+  "type": "feat",
+  "description": "Navigation, Hero Section, and Page Structure Redesign: Replace HeroGlobe (3D Three.js globe) with clean Hero section featuring headline, description, destination photo background, and CTA. Simplify Navigation to minimal logo + essential links. Reorganize App.tsx sections to match required layout order: Navigation, Hero, TripForm, Popular Destinations, Trip Plan/Budget, Accommodation, Food, Activities, Map, Footer. Remove unnecessary sections (EditorialIntro, MoodSelector, TravelIntelligence, ScrollStory, GlobalDestinationSearch as standalone section) or merge into main flow.",
+  "status": "completed",
+  "steps": [
+    "Read src/components/HeroGlobe.tsx to understand current Three.js implementation and props",
+    "Create new src/components/HeroSection.tsx: clean hero with h1 headline 'Plan Your Perfect Trip', short description, destination photo as background (use one from assets/images), white overlay for text contrast, single CTA button 'Start Planning' that scrolls to trip form",
+    "Update src/components/Navigation.tsx: keep logo, simplify nav links to only: Destinations, Plan Trip, (conditionally) Saved Trips; remove Scene labels and excessive uppercase; make CTA button simpler",
+    "Read src/App.tsx sections array and identify: HeroGlobe, EditorialIntro, DestinationShowcase, MoodSelector, GlobalDestinationSearch, TripPlanner, TravelIntelligence, Footer, SavedTripsModal",
+    "In src/App.tsx, remove or comment out: HeroGlobe, EditorialIntro, MoodSelector as standalone section, TravelIntelligence, GlobalDestinationSearch as standalone section (keep GlobalDestinationSearch component code for potential future use or merge search into TripPlanner form)",
+    "In src/App.tsx, reorder remaining sections to: Navigation (keep), new HeroSection, TripPlanner (includes form), DestinationShowcase (move before or after form based on UX), results sections (budget, accommodation, food, activities, map - these may be inside TripPlanner output), Footer",
+    "Update section IDs and scroll targets to match new structure",
+    "Preserve state management logic: savedTrips, currentDestinationId, mood/group/energy state (these may still be needed for TripPlanner, even if MoodSelector UI is simplified or moved into form)",
+    "Ensure all scroll handlers (handleScrollToPlanner, handleScrollToDestinations) still work with new section IDs",
+    "Remove Three.js imports and dependencies from App.tsx if HeroGlobe is fully removed",
+    "Update any hardcoded 'Scene' labels in JSX to simpler headings or remove scene metaphor"
+  ],
+  "acceptance_criteria": [
+    "src/components/HeroSection.tsx exists with clean hero UI (no 3D globe)",
+    "src/App.tsx imports HeroSection instead of HeroGlobe",
+    "App.tsx sections are in required order: Hero, TripForm area, Popular Destinations, output sections, Footer",
+    "Dark cinematic sections (EditorialIntro with elaborate storytelling, standalone MoodSelector with personality UI, TravelIntelligence explanations, GlobalDestinationSearch as big section) are removed or simplified",
+    "Navigation is clean and minimal with fewer links",
+    "Running npm run lint passes",
+    "Running npm run dev shows new hero section without 3D globe, page structure matches requirements"
+  ],
+  "verification": [
+    "npm run lint",
+    "npm run dev and verify new hero section renders at top (no 3D globe animation)",
+    "Verify Navigation has simplified links and clean CTA button",
+    "Scroll through page and verify section order matches: Hero, Form, Destinations, Results, Footer",
+    "Click 'Start Planning' button in hero and verify it scrolls to trip planner form",
+    "Verify no console errors related to Three.js or missing components"
+  ],
+  "blocked_reason": null,
+  "findings": "Successfully redesigned navigation, hero section, and page structure. Created new HeroSection.tsx with clean hero using destination photo background (Ladakh), white overlay for text contrast, prominent headline 'Plan Your Perfect Trip', description, and 'Start Planning' CTA button. Simplified Navigation.tsx: removed dark theme (replaced with white/light backgrounds), removed 'Scene' metaphor and excessive uppercase styling, reduced nav links from 5 to 2 (Destinations, Plan Trip), updated to clean minimal style with blue accent (#0EA5E9). Restructured App.tsx: removed HeroGlobe (3D Three.js globe), EditorialIntro, MoodSelector section, GlobalDestinationSearch standalone section, TravelIntelligence, and Scene 7 closing section. Reordered sections to: Navigation, HeroSection, TripPlanner, DestinationShowcase, Footer. Removed all Three.js imports. Updated scroll handlers to work with new structure. Build and lint pass successfully. Note: TripPlanner, DestinationShowcase, Footer, and SavedTripsModal components still use old dark Tailwind classes which will need updating in subsequent features. MoodSelector, EditorialIntro, GlobalDestinationSearch, TravelIntelligence, and HeroGlobe components are no longer imported but remain in codebase for potential future reference."
+}

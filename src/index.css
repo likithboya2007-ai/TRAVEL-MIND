@@ -1,0 +1,167 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-display: 'Outfit', sans-serif;
+    --font-sans: 'Plus Jakarta Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /*
+     * TravelMind AI Design System
+     * Clean, minimal, professional travel-planning theme
+     * 
+     * Color Palette:
+     * - Backgrounds: Pure white (#FFFFFF) for main content, soft gray (#F8F9FA) for sections
+     * - Text: Dark charcoal (#1A1A1A) for headings, medium gray (#4B5563) for body text
+     * - Accent: Ocean blue (#0EA5E9) for CTAs, links, and interactive elements
+     * - Borders: Light gray (#E5E7EB) for subtle separation
+     * - Success: Green (#10B981), Warning: Amber (#F59E0B), Error: Red (#EF4444)
+     */
+    
+    /* Backgrounds */
+    --color-bg-primary: #FFFFFF;
+    --color-bg-secondary: #F8F9FA;
+    --color-bg-tertiary: #F3F4F6;
+    
+    /* Text colors */
+    --color-text-primary: #1A1A1A;
+    --color-text-secondary: #4B5563;
+    --color-text-tertiary: #6B7280;
+    
+    /* Accent and interactive */
+    --color-accent: #0EA5E9;
+    --color-accent-hover: #0284C7;
+    --color-accent-light: #E0F2FE;
+    
+    /* Borders and dividers */
+    --color-border: #E5E7EB;
+    --color-border-light: #F3F4F6;
+    
+    /* Semantic colors */
+    --color-success: #10B981;
+    --color-warning: #F59E0B;
+    --color-error: #EF4444;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-sans);
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+  }
+
+  body {
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: var(--font-display);
+    color: var(--color-text-primary);
+  }
+
+  .font-mono, .tabular-nums {
+    font-family: 'JetBrains Mono', 'Plus Jakarta Sans', ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Subtle fade-in animation for sections */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Custom minimal scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D1D5DB;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9CA3AF;
+}
+
+/* Leaflet light theme customizations */
+.leaflet-container {
+  background: #F8F9FA !important;
+  font-family: var(--font-sans) !important;
+}
+
+.currency-symbol {
+  font-family: var(--font-sans), system-ui, sans-serif !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background: #FFFFFF !important;
+  color: var(--color-text-primary) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+.leaflet-popup-tip {
+  background: #FFFFFF !important;
+}
+
+.leaflet-bar {
+  border: 1px solid var(--color-border) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.leaflet-bar a {
+  background-color: #FFFFFF !important;
+  color: var(--color-text-primary) !important;
+  border-bottom: 1px solid var(--color-border) !important;
+}
+
+.leaflet-bar a:hover {
+  background-color: var(--color-bg-secondary) !important;
+  color: var(--color-accent) !important;
+}
+
+.leaflet-control-attribution {
+  background: rgba(255, 255, 255, 0.95) !important;
+  color: var(--color-text-tertiary) !important;
+  font-size: 10px !important;
+  border: 1px solid var(--color-border-light) !important;
+}
+
+.leaflet-control-attribution a {
+  color: var(--color-accent) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .animate-fade-in-up {
+    animation: none;
+  }
+}

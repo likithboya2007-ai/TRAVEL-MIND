@@ -1,0 +1,38 @@
+{
+  "id": "FEAT-003",
+  "type": "feat",
+  "description": "Budget Fit - Automatically downgrade trip elements (stay tier, transport mode, paid activities) to fit user's budget. Add city cost tiers to destinations and update cost calculations.",
+  "status": "pending",
+  "steps": [
+    "1. Add costTier ('metro' | 'tier-2' | 'hill' | 'beach') and costMultiplier (number) fields to Destination interface in src/data/destinations.ts. Update all 6 existing destinations (goa, jaipur, hampi, ladakh, kerala, pondicherry) with appropriate values: metro=1.5, tier-2=0.8, hill=1.3, beach=1.2.",
+    "2. Update calculateAccommodationCost() in src/utils/plannerLogic.ts to multiply base costs (budget: 1500, mid: 3500, luxury: 8000) by destination.costMultiplier.",
+    "3. Update calculateTransportCost() in src/utils/plannerLogic.ts to multiply base costs (bus: 800, train: 1500, flight: 5000) by destination.costMultiplier.",
+    "4. Create src/utils/budgetOptimizer.ts with fitToBudget(itinerary, targetBudget) function. Implement three-tier optimization: (1) downgrade stay tier (luxury→mid→budget), (2) downgrade transport (flight→train→bus), (3) remove paid activities starting with highest cost. Return BudgetFitResult with adjustedItinerary, changes array (type, from, to, savedInr), and finalCost.",
+    "5. Add calculateOweSummary helper in budgetOptimizer.ts that recalculates total cost after adjustments and updates costBreakdown.totalEstimatedInr, varianceInr, and budgetStatus.",
+    "6. Create src/components/BudgetFitModal.tsx that displays proposed changes before applying. Show table of adjustments (Stay: Luxury→Mid, Save ₹12,000), new total cost, and Apply/Cancel buttons.",
+    "7. Add 'Fit to My Budget' button to src/components/TripPlanner.tsx, visible only when costBreakdown.varianceInr < 0 (over budget). On click, call fitToBudget and show BudgetFitModal. On Apply, update itinerary state with adjusted version and show success toast with total savings.",
+    "8. Add unit tests in src/utils/budgetOptimizer.test.ts covering: only stay downgrade needed, stay+transport downgrade, all three adjustments, edge case where budget is impossible to meet (verify closest fit returned)."
+  ],
+  "acceptance_criteria": [
+    "All 6 destinations in destinations.ts have costTier and costMultiplier fields",
+    "Cost calculations in plannerLogic.ts use destination.costMultiplier",
+    "Fit to My Budget button appears when totalEstimatedInr > userBudgetInr",
+    "Clicking button shows modal with specific changes and savings amounts",
+    "Algorithm tries downgrades in order: stay tier, then transport, then activities",
+    "Apply button updates itinerary and shows toast 'Budget optimized! Saved ₹X'",
+    "Final cost is at or below target budget (or closest possible)",
+    "TypeScript lint passes (npm run lint)",
+    "All unit tests pass including new budgetOptimizer tests (npm run test)"
+  ],
+  "verification": [
+    "npm run lint - TypeScript strict mode passes",
+    "npm run test - all tests pass including budgetOptimizer.test.ts",
+    "Manual: Generate trip with budget ₹20,000 but select luxury stay and flight (should exceed budget)",
+    "Manual: Verify 'Fit to My Budget' button appears in red/warning color",
+    "Manual: Click button, verify modal shows specific downgrades (e.g., Luxury→Mid stay)",
+    "Manual: Click Apply, verify itinerary updates, cost breakdown shows new total under budget",
+    "Manual: Verify toast shows actual savings amount"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

@@ -1,0 +1,37 @@
+{
+  "id": "FEAT-001",
+  "type": "feat",
+  "description": "Guest Mode - Remove hard login wall, allow users to browse and generate plans without an account. Prompt for login only when accessing save, bucket list, expenses, or AI copilot features.",
+  "status": "pending",
+  "steps": [
+    "1. Create src/utils/authGate.ts with requireAuth(user, onShowAuthModal, feature) function that returns false and shows toast if user is null, true otherwise.",
+    "2. Modify src/App.tsx to remove the hard auth wall at lines 520-570. Allow rendering of HeroSection, DestinationShowcase, and TripPlanner even when user is null. Move auth modal to conditional rendering triggered by state.",
+    "3. Update src/components/TripPlanner.tsx to wrap handleSaveTrip, handleAddToBucketList, expense tracking button click, and copilot open button with requireAuth checks. If auth is required, show toast and trigger auth modal via callback prop.",
+    "4. Add showAuthModal state to src/contexts/AuthContext.tsx and expose it via context so components can trigger the modal programmatically.",
+    "5. Implement guest trip storage in localStorage with key pattern 'guest_itinerary_{timestamp}'. When a guest generates a trip, store it locally. Add UI hint showing 'Sign in to save permanently'.",
+    "6. Add migration path: when user logs in, check localStorage for guest trips and offer to import them via a modal. After import, clear localStorage guest data.",
+    "7. Update src/components/Header.tsx to show 'Sign In' button when user is null instead of blocking the page.",
+    "8. Add visual badges/hints on gated features (Save, Bucket List, Expenses, Copilot buttons) showing 'Sign in required' tooltip or icon for guest users."
+  ],
+  "acceptance_criteria": [
+    "Guest can visit home page and browse destinations without seeing auth modal",
+    "Guest can search destinations and generate trip plans",
+    "Guest sees 'Sign in to save trips' toast when clicking Save/Bucket/Expenses/Copilot",
+    "Auth modal appears only when guest tries gated features",
+    "Logged-in users experience no regression - all features work as before",
+    "Guest-generated trip persists in localStorage until login or manual clear",
+    "After login, guest can import their unsaved trips from localStorage",
+    "TypeScript lint passes (npm run lint)",
+    "All existing tests pass (npm run test)"
+  ],
+  "verification": [
+    "npm run lint - TypeScript strict mode passes",
+    "npm run test - all tests pass",
+    "Manual: Open app in incognito, verify home page loads without auth prompt",
+    "Manual: Generate a trip as guest, verify localStorage contains trip data",
+    "Manual: Click Save button as guest, verify toast appears and auth modal opens",
+    "Manual: Sign in after being guest, verify migration offer appears if guest trips exist"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

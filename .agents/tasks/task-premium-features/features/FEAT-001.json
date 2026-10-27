@@ -1,0 +1,33 @@
+{
+  "id": "FEAT-001",
+  "type": "feat",
+  "description": "Real-Time Weather Integration - Add WeatherWidget component showing current weather + 7-day forecast using OpenWeatherMap API (free tier), integrated into DestinationSummary component",
+  "status": "pending",
+  "steps": [
+    "1. Install OpenWeatherMap dependency: Run 'npm install axios' (if not already installed) for HTTP requests to OpenWeatherMap API",
+    "2. Add VITE_OPENWEATHER_API_KEY to .env.local file (user must provide their own free OpenWeatherMap API key from openweathermap.org/api)",
+    "3. Create src/services/openWeatherService.ts: Implement fetchCurrentWeather(lat, lon) and fetchSevenDayForecast(lat, lon) functions using OpenWeatherMap Current Weather API and One Call API 3.0 (free tier). Handle errors gracefully with fallback to existing weatherService.ts mock data if API fails or key is missing.",
+    "4. Create src/components/WeatherWidget.tsx: Display current weather (temp, condition, icon) and 7-day forecast cards. Accept destinationId prop to get coordinates from destination data. Use Tailwind classes matching project design (blue accent, white cards, rounded-2xl). Follow existing WeatherForecast.tsx pattern for layout and styling but simplified for widget format.",
+    "5. Update src/components/DestinationSummary.tsx: Import and render WeatherWidget below the 'Quick Info Grid' section, passing destination coordinates. Add conditional rendering if weather data unavailable.",
+    "6. Update src/types/search.ts or create src/types/weather.ts: Add TypeScript interfaces for OpenWeatherMap API responses (CurrentWeather, ForecastDay, WeatherResponse)",
+    "7. Test temperature unit toggle (C/F) functionality in WeatherWidget, matching WeatherForecast.tsx pattern"
+  ],
+  "acceptance_criteria": [
+    "WeatherWidget displays current weather with temperature, condition icon, and description",
+    "7-day forecast shown as horizontal scrollable cards with daily high/low temps",
+    "Widget appears in DestinationSummary for all destinations with coordinates",
+    "Falls back gracefully to mock data or hidden state if API key missing or API fails",
+    "Temperature unit toggle (C/F) works correctly",
+    "TypeScript compilation passes with npm run lint",
+    "Production build succeeds with npm run build"
+  ],
+  "verification": [
+    "Run 'npm run lint' - must pass with no TypeScript errors",
+    "Run 'npm run build' - must build successfully",
+    "Manual test: Generate trip for Goa, scroll to DestinationSummary, verify WeatherWidget appears with current temp and 7-day forecast",
+    "Manual test: Toggle temperature unit between C and F, verify all temps update",
+    "Manual test: Remove VITE_OPENWEATHER_API_KEY from .env.local, verify widget either hides or shows fallback message (no crash)"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

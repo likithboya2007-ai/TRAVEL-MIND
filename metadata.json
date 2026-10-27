@@ -1,0 +1,6 @@
+{
+  "name": "TravelMind AI",
+  "description": "Cinematic 3D travel discovery and intelligent trip planning platform with interactive globe, destination storytelling, and smart itineraries.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

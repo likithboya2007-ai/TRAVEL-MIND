@@ -1,0 +1,41 @@
+{
+  "id": "FEAT-004",
+  "type": "feat",
+  "description": "Personalized Recommendations - Build content-based recommender from user's saved, bucket-list, and completed trips. Show 'Recommended for You' section on home page with reasons.",
+  "status": "pending",
+  "steps": [
+    "1. Create src/utils/recommendationEngine.ts with TripFeatures interface (mood, categories[], budgetBand, region, duration) and extractFeatures(itinerary) function that analyzes a trip and returns its feature vector.",
+    "2. Implement getRegion(state) helper in recommendationEngine.ts that maps state names to regions (north, south, east, west, central) based on Indian geography.",
+    "3. Implement calculateSimilarity(userProfile, destination) function that scores destinations 0-1 based on: mood match (weight 0.3), category overlap (weight 0.4), budget band match (weight 0.2), region diversity (weight 0.1 - prefer different regions to encourage exploration).",
+    "4. Implement getRecommendations(userId) async function that: (a) fetches user's last 10 saved trips from Supabase, (b) builds aggregate user profile from trip features (most frequent mood, union of categories, most frequent budget band), (c) scores all destinations, (d) filters out already-visited destinations, (e) returns top 5 with reasons.",
+    "5. Implement generateReason(profile, destination) helper that creates human-readable explanations like 'Because you enjoy Adventure trips' or 'Because you like Culture and Food'.",
+    "6. Handle cold start: if user has no trip history, return getPopularDestinations() which returns the 5 destinations with most saves/bucket-list adds (can be hardcoded initially as goa, jaipur, ladakh, kerala, pondicherry).",
+    "7. Create src/components/RecommendedDestinations.tsx component that calls getRecommendations on mount, displays cards with destination image, name, state, reason text in blue, and 'Plan Trip' button that navigates to planner with pre-filled destination.",
+    "8. Add RecommendedDestinations component to src/App.tsx home page, positioned below DestinationShowcase. Only render if user is logged in.",
+    "9. Add unit tests in src/utils/recommendationEngine.test.ts covering: extractFeatures returns correct values, calculateSimilarity scores correctly for matching/non-matching profiles, cold start returns popular destinations, recommendations exclude visited destinations."
+  ],
+  "acceptance_criteria": [
+    "extractFeatures correctly identifies mood, categories, budget band, region from itinerary",
+    "calculateSimilarity returns scores between 0 and 1",
+    "getRecommendations returns top 5 destinations with reasons for users with trip history",
+    "Cold start (no trips) returns popular destinations",
+    "Recommendations exclude destinations user has already visited",
+    "Home page shows 'Recommended for You' section for logged-in users only",
+    "Clicking 'Plan Trip' navigates to TripPlanner with destination pre-filled",
+    "Reasons are human-readable (e.g., 'Because you like Adventure and Nature')",
+    "TypeScript lint passes (npm run lint)",
+    "All unit tests pass including recommendationEngine tests (npm run test)"
+  ],
+  "verification": [
+    "npm run lint - TypeScript strict mode passes",
+    "npm run test - all tests pass including recommendationEngine.test.ts",
+    "Manual: Sign in with account that has saved trips, refresh home page",
+    "Manual: Verify 'Recommended for You' section appears below destination showcase",
+    "Manual: Verify recommendations show destination images and reason text",
+    "Manual: Click 'Plan Trip' on a recommendation, verify TripPlanner opens with that destination",
+    "Manual: Sign in with new account (no trips), verify popular destinations shown",
+    "Manual: Verify recommendations change as user saves more trips"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

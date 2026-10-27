@@ -1,0 +1,43 @@
+{
+  "id": "FEAT-007",
+  "type": "feat",
+  "description": "Multi-City Trips - Allow users to plan trips with 2-4 city legs, with inter-city transport links between them. Each leg reuses existing planner logic.",
+  "status": "pending",
+  "steps": [
+    "1. Add MultiCityLeg and MultiCityTrip interfaces to src/utils/plannerLogic.ts. MultiCityLeg includes: legNumber, destination, days, startDate, endDate, itinerary (GeneratedItinerary), and optional transportToNext (mode, durationHours, costInr). MultiCityTrip includes: id, legs[], totalDays, totalCostInr, createdAt.",
+    "2. Implement calculateInterCityTransport(from, to, mode) helper in plannerLogic.ts that uses haversine distance between destinations and calculates duration (flight: 600km/h, train: 80km/h, bus: 60km/h) and cost (flight: ₹8/km, train: ₹1.5/km, bus: ₹1/km).",
+    "3. Implement generateMultiCityTrip(legs, baseInput) async function in plannerLogic.ts that: iterates through legs, calls generateTripPlan for each with correct dates, calculates transport between consecutive legs, accumulates total cost, returns MultiCityTrip object.",
+    "4. Create src/components/MultiCityPlanner.tsx with: array of leg inputs (destination dropdown, days input), Add City button (max 4 legs), Remove button (min 2 legs), Generate Multi-City Trip button. Share base inputs (start city, budget, mood, group, energy) across all legs.",
+    "5. Create src/components/MultiCityItinerary.tsx that renders: trip summary header (X cities, Y days, ₹Z total), numbered leg cards (each showing destination name, date range, full itinerary with ActivitiesItinerary component), transport connection cards between legs (mode icon, duration, cost), total cost summary footer.",
+    "6. Add /multi-city route to src/App.tsx that renders MultiCityPlanner.",
+    "7. Add 'Plan Multi-City Trip' navigation link in Header or home page.",
+    "8. Add multi-city trip support to savedTripsService: save multi-city trips with flag is_multi_city=true in trip_data, display them in saved trips list with 'Multi-City' badge.",
+    "9. Add unit tests in src/utils/plannerLogic.test.ts covering: generateMultiCityTrip with 2 legs returns correct structure, total cost includes all leg costs plus transport costs, dates are continuous across legs, transport calculation produces reasonable duration and cost."
+  ],
+  "acceptance_criteria": [
+    "User can add 2-4 city legs to multi-city planner",
+    "Each leg has independent destination and duration (1-7 days)",
+    "Generate button creates itinerary for each leg using existing plannerLogic",
+    "Inter-city transport automatically calculated with mode, duration, and cost",
+    "Timeline shows continuous dates across all legs (leg 2 starts day after leg 1 ends + travel day)",
+    "Total cost includes all leg costs plus inter-city transport costs",
+    "UI displays numbered legs with travel connection cards showing transport details",
+    "Multi-city trips can be saved to database and loaded later",
+    "TypeScript lint passes (npm run lint)",
+    "Unit tests pass for multi-city generation (npm run test)"
+  ],
+  "verification": [
+    "npm run lint - TypeScript strict mode passes",
+    "npm run test - all tests pass including multi-city plannerLogic tests",
+    "Manual: Navigate to /multi-city, verify form with 2 initial leg inputs",
+    "Manual: Add 3rd and 4th legs, verify Add button disables at 4 legs",
+    "Manual: Select destinations (Goa 3 days, Jaipur 2 days, Ladakh 4 days), click Generate",
+    "Manual: Verify itinerary shows 3 numbered sections with full day plans",
+    "Manual: Verify transport cards between legs show mode/duration/cost (e.g., ✈️ Flight to Jaipur, 2h, ₹4,800)",
+    "Manual: Verify total cost at bottom includes all legs + transport",
+    "Manual: Save multi-city trip, verify it appears in saved trips with 'Multi-City' badge",
+    "Manual: Verify dates are continuous (if leg 1 is Dec 1-3, transport Dec 4, leg 2 starts Dec 5)"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

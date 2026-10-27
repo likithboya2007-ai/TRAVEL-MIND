@@ -1,0 +1,36 @@
+{
+  "id": "FEAT-002",
+  "type": "feat",
+  "description": "Dark Mode Toggle - System-wide dark/light theme with localStorage persistence, smooth CSS transitions, and toggle button in Navigation component. Independent of FEAT-001.",
+  "status": "pending",
+  "steps": [
+    "1. Create src/contexts/ThemeContext.tsx: Implement ThemeProvider with 'light'|'dark' state, localStorage persistence ('travelmind_theme'), system preference detection via window.matchMedia('(prefers-color-scheme: dark)'), and toggleTheme function. Export ThemeContext and useTheme hook following AuthContext.tsx pattern.",
+    "2. Create src/hooks/useTheme.ts: Export useTheme hook that consumes ThemeContext (can be combined with step 1 or separate file for cleaner separation)",
+    "3. Update src/index.css: Add dark mode CSS variables and classes. Define --color-bg-primary-dark, --color-text-primary-dark, etc. Add .dark class styles for all semantic colors. Ensure smooth transitions on theme change with 'transition-colors duration-200' on body and major containers.",
+    "4. Update src/App.tsx: Wrap entire app in ThemeProvider (imported from ThemeContext.tsx). Add 'dark' class to root div when theme is 'dark', using useTheme hook. Follow existing AuthProvider wrapping pattern.",
+    "5. Create src/components/ThemeToggle.tsx: Sun/Moon icon button component using Lucide React icons. Shows Sun icon in dark mode (click to go light), Moon icon in light mode (click to go dark). Styled with project blue accent colors and hover effects.",
+    "6. Update src/components/Navigation.tsx: Import and render ThemeToggle button in top navigation bar, positioned near user profile/auth buttons. Maintain responsive layout.",
+    "7. Update all major components with dark mode Tailwind classes: Update these components to use dark:bg-*, dark:text-*, dark:border-* classes - DestinationSummary.tsx, TripPlanner.tsx, HeroSection.tsx, DestinationShowcase.tsx, BudgetBreakdown.tsx, AccommodationList.tsx, FoodRecommendations.tsx, ActivitiesItinerary.tsx, SavedTripsModal.tsx, BucketListModal.tsx, AuthModal.tsx, Footer.tsx. Use consistent dark theme: dark:bg-gray-900 for backgrounds, dark:text-gray-100 for text, dark:border-gray-700 for borders.",
+    "8. Update src/components/WeatherForecast.tsx: Already has dark styling (bg-[#090f20]). Ensure it adapts to theme context or document that it maintains its own dark appearance regardless of theme."
+  ],
+  "acceptance_criteria": [
+    "Theme toggle button appears in Navigation with Sun/Moon icons",
+    "Clicking toggle switches between light and dark mode instantly",
+    "Theme preference persists across page reloads via localStorage",
+    "All major components render correctly in both light and dark modes",
+    "Smooth color transitions (no jarring flashes) when switching themes",
+    "Default theme matches system preference if no localStorage value set",
+    "TypeScript compilation passes with npm run lint",
+    "Production build succeeds with npm run build"
+  ],
+  "verification": [
+    "Run 'npm run lint' - must pass with no TypeScript errors",
+    "Run 'npm run build' - must build successfully",
+    "Manual test: Click theme toggle in nav, verify entire app switches to dark mode with appropriate colors",
+    "Manual test: Refresh page, verify theme persists",
+    "Manual test: Clear localStorage (devtools), refresh, verify theme matches system preference",
+    "Manual test: Navigate through all major sections (hero, planner, destinations, modals) in both themes, verify no unreadable text or broken layouts"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

@@ -1,0 +1,43 @@
+{
+  "id": "FEAT-005",
+  "type": "feat",
+  "description": "Group Trips - Invite collaborators by email, live sync with Supabase Realtime, upvote/downvote stops, and split expenses between members with 'who owes whom' summary.",
+  "status": "pending",
+  "steps": [
+    "1. Run migrations/005_group_trips.sql in Supabase SQL Editor. This creates: trip_members table (trip_id, user_id, role, invited_email, status), stop_votes table (trip_id, stop_id, user_id, vote), and RLS policies. Also alters trip_expenses to add paid_by_user_id and split_between UUID[] columns.",
+    "2. Create src/services/groupTripService.ts with: inviteCollaborator(tripId, email, role) that inserts into trip_members and optionally sends email via Supabase Edge Function; acceptInvitation(tripId, userId) that updates status to 'accepted'; listMembers(tripId) that fetches all members.",
+    "3. Create src/hooks/useRealtimeTrip.ts that subscribes to Supabase Realtime channel for trip updates. On UPDATE event for saved_trips table, update local itinerary state and show toast 'Trip updated by collaborator'. Return updated itinerary.",
+    "4. Integrate useRealtimeTrip in src/components/TripPlanner.tsx so changes by other members are reflected in real-time.",
+    "5. Create src/services/stopVotingService.ts with: voteStop(tripId, stopId, vote) that upserts to stop_votes; getStopVotes(tripId, stopId) that aggregates votes and returns {upvotes, downvotes, score}.",
+    "6. Create src/components/StopVoteButtons.tsx that displays 👍 upvote count, 👎 downvote count, and buttons for current user to vote. Show vote score (upvotes - downvotes) prominently.",
+    "7. Integrate StopVoteButtons into each stop card in src/components/ActivitiesItinerary.tsx. Only show for trips with multiple members.",
+    "8. Create src/services/expenseSplitService.ts with: splitExpense(tripId, expense, splitBetween[]) that updates trip_expenses with paid_by and split_between; calculateOweSummary(expenses, members) that computes net balances and generates settlement list (who owes whom how much). Use greedy settlement algorithm.",
+    "9. Create src/components/ExpenseSplitSummary.tsx that displays 'Who Owes Whom' section in ExpenseTracker. Show list of settlements like 'Alice → Bob: ₹1,200'.",
+    "10. Create src/components/InviteModal.tsx with email input, role dropdown (editor/viewer), and Send button. Show list of current members with remove option for owner.",
+    "11. Add 'Invite' button to trip header in TripPlanner. Only show for trip owner. On click, open InviteModal.",
+    "12. Add unit tests in src/services/expenseSplitService.test.ts covering settlement calculations with various expense splits and verifying balances sum to zero."
+  ],
+  "acceptance_criteria": [
+    "Trip owner can invite collaborators by email with editor or viewer role",
+    "Invited users receive invitation (email if Supabase function configured, or in-app notification)",
+    "Real-time sync: when one member edits trip, others see changes with toast notification",
+    "Members can upvote/downvote stops, vote counts visible to all",
+    "Expenses can be split between specific members",
+    "ExpenseTracker shows 'Who Owes Whom' summary with correct settlement amounts",
+    "RLS policies ensure only trip members can access trip data",
+    "TypeScript lint passes (npm run lint)",
+    "Unit tests pass for expense split calculations (npm run test)"
+  ],
+  "verification": [
+    "npm run lint - TypeScript strict mode passes",
+    "npm run test - all tests pass including expenseSplitService.test.ts",
+    "Manual: Create trip, click Invite, enter email and send",
+    "Manual: Verify trip_members row created in Supabase",
+    "Manual: Open same trip in two browser windows (same or different users), edit in one, verify other updates",
+    "Manual: Click upvote on a stop, verify count increases and vote persists after refresh",
+    "Manual: Add expense with 'Split between' selecting 2 members, verify 'Who Owes Whom' shows correct settlement",
+    "Manual: Verify settlements balance (total owed = total paid)"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

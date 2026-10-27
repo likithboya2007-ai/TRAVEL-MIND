@@ -1,0 +1,31 @@
+{
+  "project_type": "React 19 + TypeScript + Vite + Tailwind CSS 4 travel-planning web app",
+  "language": "TypeScript",
+  "build_system": "Vite 8.3.0 with @vitejs/plugin-react, @tailwindcss/vite 4.3.3",
+  "test_framework": "None detected in package.json; manual verification via npm run dev",
+  "build_command": "npm run build",
+  "test_command": "npm run lint (TypeScript type checking only)",
+  "verification_instructions": "1. Run 'npm run lint' to verify TypeScript types compile without errors. 2. Run 'npm run dev' and verify the app loads at localhost:3000 without console errors. 3. Manually test each redesigned section in browser (navigation, hero, form, destinations, budget, map). 4. Test responsive layout on mobile viewport (DevTools 375px width).",
+  "snapshot_or_generated_files": "None; all code is source-controlled, no generated snapshots to commit.",
+  "environment_constraints": "HMR may be disabled via DISABLE_HMR env var in AI Studio. Leaflet maps work client-side only (no SSR). Three.js used for 3D globe (will be removed in redesign). Google Fonts loaded via CDN in index.html (fonts remain available). API calls to Photon geocoding and potentially Gemini API (GEMINI_API_KEY in .env.local).",
+  "contribution_requirements": "No AGENTS.md or CONTRIBUTING.md found. Follow TypeScript strict typing, maintain existing file structure in src/, preserve working logic (geocoding, itinerary generation, localStorage for saved trips), and keep Leaflet map integration functional.",
+  "key_patterns": "- Dark theme: #050811 background, teal/cyan accents (#14b8a6, #06b6d4), slate text colors\n- Component structure: Functional React components with TypeScript interfaces for props\n- State management: useState hooks, localStorage for persistence\n- Styling: Tailwind utility classes, some custom CSS in index.css for animations and Leaflet theme\n- Data: DESTINATIONS array in src/data/destinations.ts with coordinates, attractions, localFood\n- Services: geocodingService.ts uses Photon API for autocomplete\n- Utils: plannerLogic.ts generates itineraries with cost breakdown and scoring logic\n- Map: TravelMap.tsx uses Leaflet with custom markers and polylines",
+  "relevant_files": [
+    "src/index.css (complete CSS overhaul needed)",
+    "src/App.tsx (section reordering and component replacement)",
+    "src/components/Navigation.tsx (minimal redesign)",
+    "src/components/HeroGlobe.tsx (replace with simple Hero)",
+    "src/components/TripPlanner.tsx (form layout improvements)",
+    "src/components/DestinationShowcase.tsx (card redesign)",
+    "src/components/TravelMap.tsx (keep functional, style updates)",
+    "src/components/Footer.tsx (simplify)",
+    "src/components/MoodSelector.tsx (remove or simplify)",
+    "src/components/EditorialIntro.tsx (study pattern)",
+    "src/components/GlobalDestinationSearch.tsx (keep functional)",
+    "src/data/destinations.ts (data source for all features)",
+    "src/services/geocodingService.ts (autocomplete logic)",
+    "src/utils/plannerLogic.ts (budget calculation and itinerary generation)",
+    "src/types/search.ts (TypeScript interfaces)"
+  ],
+  "directory_structure": "src/ contains main App.tsx and index.css. src/components/ holds all React components (Navigation, HeroGlobe, TripPlanner, TravelMap, etc.). src/data/ has destinations.ts with attraction/food data. src/services/ has geocodingService.ts. src/utils/ has plannerLogic.ts for itinerary logic. src/types/ has TypeScript interfaces. src/assets/images/ contains 6 destination JPGs. Root has vite.config.ts, tsconfig.json, package.json."
+}

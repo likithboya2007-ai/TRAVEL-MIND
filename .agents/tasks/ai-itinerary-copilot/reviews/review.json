@@ -1,0 +1,28 @@
+{
+  "verdict": "CHANGES_REQUESTED",
+  "findings": [
+    {
+      "id": "BLOCKER-1",
+      "severity": "critical",
+      "title": "Copilot Apply Changes Handler Missing",
+      "file": "src/App.tsx",
+      "line": "534-537",
+      "description": "The TravelCopilot component is instantiated without the required onApplyChanges prop. When users click 'Apply Changes' in the diff preview, the callback is undefined and nothing happens.",
+      "evidence": "<TravelCopilot isOpen={isCopilotOpen} onClose={() => setIsCopilotOpen(false)} tripContext={copilotTripContext} />",
+      "impact": "Acceptance criterion #2 fails: 'make day 2 cheaper' shows diff but Apply button does not update the itinerary. The entire tool calling feature is non-functional from the user perspective.",
+      "requiredFix": "1. Implement handleApplyItineraryChanges function in App.tsx that takes ItineraryChange[] array, applies replace/remove/add/move operations to the itinerary state, recalculates costBreakdown, and updates the UI. 2. Pass this handler as prop: <TravelCopilot onApplyChanges={handleApplyItineraryChanges} />. 3. Verify that clicking Apply after 'make day 2 cheaper' actually updates costs in the displayed itinerary."
+    },
+    {
+      "id": "BLOCKER-2",
+      "severity": "critical",
+      "title": "Itinerary Structure Mismatch in Tool Execution",
+      "file": "api/_lib/chat.ts",
+      "line": "168-188",
+      "description": "The handleToolCall function expects itinerary to be an array [{ stops: [...] }, ...] but the actual structure passed is a GeneratedItinerary object with itinerary.days property. Tool calls access itinerary[args.day - 1].stops but should access itinerary.days[args.day - 1].stops.",
+      "evidence": "Backend: if (itinerary && itinerary[args.day - 1]?.stops?.[args.order]) // Client sends: GeneratedItinerary { days: DayPlan[], ... } not DayPlan[]",
+      "impact": "When the LLM makes tool calls like replace_stop(day=2, order=0, ...), the backend cannot find the stop because it's looking at the wrong path. Tool calls silently return empty changes: [], causing the diff preview to be empty. Users see no proposed changes even when the LLM correctly identified modifications.",
+      "requiredFix": "Option A (preferred): In TripPlanner.tsx or App.tsx where onTripGenerated is called, set currentItinerary: itinerary.days (send only the days array). Option B: Fix handleToolCall to extract days: const days = Array.isArray(itinerary) ? itinerary : itinerary?.days; then use days[args.day - 1]. Verify by testing 'make day 2 cheaper' and confirming diff preview shows actual stop names and costs from the current itinerary."
+    }
+  ],
+  "reviewDoc": "c:\\Users\\likit\\Downloads\\travelmind-ai\\.agents\\tasks\\ai-itinerary-copilot\\reviews\\code-review.md"
+}

@@ -1,0 +1,14 @@
+{
+  "task_id": "task-premium-features",
+  "task_description": "Add 6 premium features to TravelMind AI: real-time weather widget, dark mode toggle, reviews & ratings system, PDF export for itinerary, social sharing, and photo gallery",
+  "status": "pending",
+  "feature_order": [
+    "FEAT-001",
+    "FEAT-002",
+    "FEAT-003",
+    "FEAT-004",
+    "FEAT-005",
+    "FEAT-006"
+  ],
+  "blocked_reason": null
+}

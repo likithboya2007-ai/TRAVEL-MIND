@@ -1,0 +1,31 @@
+{
+  "project_type": "React 19 + TypeScript + Vite SPA with Express dev server and Vercel serverless functions",
+  "language": "TypeScript (strict mode)",
+  "build_system": "Vite 8.3.0, npm workspaces",
+  "test_framework": "vitest 5.0.5 with jsdom",
+  "build_command": "npm run build",
+  "test_command": "npm run test",
+  "verification_instructions": "1. Run `npm run lint` (tsc --noEmit) to ensure TypeScript strict mode passes. 2. Run `npm run test` to execute vitest tests. 3. Manually test features in browser at http://localhost:5173 with dev server running.",
+  "snapshot_or_generated_files": "None - no snapshot testing or committed build artifacts",
+  "environment_constraints": "- Never expose GROQ_API_KEY, OPENROUTE_API_KEY, or SUPABASE_SERVICE_KEY to client bundle (only VITE_ prefixed vars allowed). - Database migrations must be run manually in Supabase SQL Editor. - Dev API server runs on :3001, frontend on :5173. - Supabase RLS policies enforce user isolation.",
+  "contribution_requirements": "- Keep existing light design system, types, and component structure (no UI redesign). - TypeScript strict mode must pass after every change. - Add or update tests for every logic change. - Make small, reviewable changes. - Never use alert(), use toast notifications from ToastContext. - Auth gates required for features needing user data.",
+  "key_patterns": "- Services in src/services/ export object with methods (e.g., savedTripsService.getAll()). - Utilities in src/utils/ export pure functions. - Database tables use UUID primary keys and RLS policies. - Toast notifications via useToast() hook. - Auth state via useAuth() from AuthContext. - All dates stored as ISO strings. - Cost calculations use multipliers based on destination cost tier.",
+  "relevant_files": [
+    "src/App.tsx",
+    "src/components/TripPlanner.tsx",
+    "src/utils/plannerLogic.ts",
+    "src/data/destinations.ts",
+    "src/lib/supabase.ts",
+    "src/contexts/AuthContext.tsx",
+    "src/contexts/ToastContext.tsx",
+    "src/services/savedTripsService.ts",
+    "src/services/bucketListService.ts",
+    "migrations/001_saved_trips.sql",
+    "migrations/002_expenses.sql",
+    "package.json",
+    "tsconfig.json",
+    "vite.config.ts",
+    "src/utils/plannerLogic.test.ts"
+  ],
+  "directory_structure": "src/components/ - React components; src/services/ - API service layers; src/utils/ - Business logic and pure functions; src/contexts/ - React contexts (Auth, Toast); src/data/ - Static data (destinations); src/lib/ - Third-party integrations; migrations/ - Supabase SQL migrations; api/ - Vercel serverless functions"
+}

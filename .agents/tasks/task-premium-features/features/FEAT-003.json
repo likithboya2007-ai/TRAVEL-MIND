@@ -1,0 +1,37 @@
+{
+  "id": "FEAT-003",
+  "type": "feat",
+  "description": "Reviews & Ratings System - Users can review completed trips with 1-5 star rating + text. Show average ratings on destination cards. Requires new Supabase 'reviews' table. Independent of FEAT-001 and FEAT-002.",
+  "status": "pending",
+  "steps": [
+    "1. Create Supabase migration: Add SQL for 'reviews' table in project documentation or separate SQL file (user must run manually in Supabase dashboard). Schema: id (uuid, primary key), user_id (uuid, references auth.users), trip_id (uuid), destination_name (text), rating (integer 1-5 with CHECK constraint), review_text (text), photos (text[] array), created_at (timestamp), updated_at (timestamp). Add RLS policies: users can INSERT their own reviews, SELECT all reviews, UPDATE/DELETE only their own reviews.",
+    "2. Update src/lib/supabase.ts: Add Review TypeScript interface matching reviews table schema. Export interface for use in services and components.",
+    "3. Create src/services/reviewService.ts: Implement functions following bucketListService.ts pattern - createReview(tripId, destinationName, rating, reviewText, photos?), getReviewsByDestination(destinationName), getReviewsByUser(), updateReview(id, rating, reviewText), deleteReview(id), getAverageRating(destinationName). All functions use supabase client and handle auth checks.",
+    "4. Create src/components/ReviewModal.tsx: Modal component for submitting/editing reviews. Accept props: isOpen, onClose, tripId, destinationName, existingReview?. Include 5-star rating selector (interactive stars using Lucide Star icon), textarea for review text (max 500 chars), optional photo upload (future enhancement - can be placeholder for now). Submit button calls reviewService.createReview(). Follow existing modal pattern from AuthModal.tsx and SavedTripsModal.tsx.",
+    "5. Create src/components/ReviewsList.tsx: Display list of reviews for a destination. Accept destinationName prop. Fetch reviews via reviewService.getReviewsByDestination(). Show each review with star rating, user info (email from auth), review text, timestamp. Include 'Load More' pagination if >10 reviews. Show average rating and total count at top.",
+    "6. Update src/components/BucketListModal.tsx: Add 'Write Review' button for completed trips (isCompleted === true). Button opens ReviewModal passing trip.id and trip.destination.name. Position button next to or replacing 'Toggle Complete' button for completed trips.",
+    "7. Update src/components/DestinationShowcase.tsx: For each destination card, fetch and display average rating (stars) using reviewService.getAverageRating(). Show rating as gold stars (1-5) and review count like '4.5 ⭐ (23 reviews)'. Cache ratings to avoid excessive API calls - fetch once on component mount and store in state.",
+    "8. Add 'See Reviews' button or expandable section in DestinationSummary.tsx or create a dedicated Reviews tab in TripPlanner results. Render ReviewsList component when user clicks to view reviews for current destination."
+  ],
+  "acceptance_criteria": [
+    "Users can submit reviews with 1-5 star rating and text for completed trips",
+    "Reviews are stored in Supabase reviews table with proper user_id association",
+    "Average ratings appear on destination cards in DestinationShowcase",
+    "ReviewsList displays all reviews for a destination with pagination",
+    "Users can only edit/delete their own reviews (enforced by RLS)",
+    "Review submission validates rating (1-5) and text length (max 500 chars)",
+    "TypeScript compilation passes with npm run lint",
+    "Production build succeeds with npm run build"
+  ],
+  "verification": [
+    "Run 'npm run lint' - must pass with no TypeScript errors",
+    "Run 'npm run build' - must build successfully",
+    "Manual test: Complete a bucket list trip, click 'Write Review', submit review with 3 stars and text, verify it saves to Supabase",
+    "Manual test: View destination card in DestinationShowcase, verify average rating displays correctly",
+    "Manual test: Click 'See Reviews' for a destination, verify ReviewsList shows all reviews with proper formatting",
+    "Manual test: Try to edit another user's review (requires second user account), verify RLS blocks it",
+    "SQL verification: Run SELECT * FROM reviews in Supabase SQL editor, verify table structure and data"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

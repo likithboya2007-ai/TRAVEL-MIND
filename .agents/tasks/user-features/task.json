@@ -1,0 +1,15 @@
+{
+  "task_id": "user-features",
+  "task_description": "Implement 7 user-facing features: Guest Mode, Sharing & Export, Budget Fit, Personalized Recommendations, Group Trips, PWA, and Multi-City Trips",
+  "status": "pending",
+  "feature_order": [
+    "FEAT-001",
+    "FEAT-002",
+    "FEAT-003",
+    "FEAT-004",
+    "FEAT-005",
+    "FEAT-006",
+    "FEAT-007"
+  ],
+  "blocked_reason": null
+}

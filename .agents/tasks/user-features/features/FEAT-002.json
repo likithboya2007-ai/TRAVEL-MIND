@@ -1,0 +1,40 @@
+{
+  "id": "FEAT-002",
+  "type": "feat",
+  "description": "Sharing & Export - Implement shareable read-only trip links, PDF export with map snapshot, calendar (.ics) export, and WhatsApp/native share functionality.",
+  "status": "pending",
+  "steps": [
+    "1. Run migrations/004_trip_sharing.sql in Supabase SQL Editor. This adds share_id (TEXT UNIQUE) and is_public (BOOLEAN DEFAULT false) columns to saved_trips table, creates index on share_id, and adds RLS policy for public read access when is_public=true.",
+    "2. Create src/services/shareService.ts with functions: generateShareLink(tripId) that generates nanoid(10), updates database with share_id and is_public=true, returns share URL; revokeShareLink(tripId) that sets is_public=false.",
+    "3. Create src/pages/SharedTrip.tsx component that fetches trip by share_id using public RLS policy (no auth required), renders read-only itinerary with TravelMap, BudgetBreakdown, and ActivitiesItinerary. Add 'Create your own trip' CTA button. Show watermark 'Shared trip' in header.",
+    "4. Update src/App.tsx routing to handle /trip/:shareId route and render SharedTrip component.",
+    "5. Create src/services/pdfExport.ts using @react-pdf/renderer. Implement exportTripToPDF(itinerary, mapSnapshot) that creates PDF document with trip name, day-by-day stops with times, budget breakdown, and map image. Use html2canvas to capture map element as data URL for embedding.",
+    "6. Create src/services/calendarExport.ts using ical-generator. Implement exportToCalendar(itinerary) that creates .ics file with one event per stop. Parse timeOfDay field to set event start times, use stop.durationHours for end time, include lat/lng in location field.",
+    "7. Extend src/services/shareService.ts with shareTrip(itinerary, shareUrl) function. Use navigator.share() if available (mobile native share), otherwise fallback to WhatsApp Web URL with pre-filled text.",
+    "8. Add Share button to src/components/TripPlanner.tsx action bar. On click, open modal showing: 'Generate Link' button (calls generateShareLink, copies to clipboard with toast), 'Export PDF' button, 'Add to Calendar' button, 'Share via WhatsApp' button, and 'Revoke Link' button.",
+    "9. Create src/components/ShareModal.tsx to display sharing options with loading states. Show spinner while generating PDF (can take 2-3s). Display success/error toasts for each action.",
+    "10. Add unit tests for share link generation, calendar export event creation, and share URL formatting in src/services/shareService.test.ts."
+  ],
+  "acceptance_criteria": [
+    "Share button generates unique link with format /trip/{nanoid}, copies to clipboard",
+    "Visiting /trip/:shareId loads read-only trip view using public RLS policy (works without login)",
+    "Export PDF downloads file with itinerary, map snapshot, and budget breakdown",
+    "Add to Calendar downloads .ics file compatible with Google Calendar/Outlook/Apple Calendar",
+    "Share button uses native share on mobile, WhatsApp fallback on desktop",
+    "Revoke button makes share link inaccessible (returns 404 or 'Trip not available')",
+    "All sharing features require authentication (gate with requireAuth from FEAT-001)",
+    "TypeScript lint passes (npm run lint)",
+    "Unit tests pass for share service (npm run test)"
+  ],
+  "verification": [
+    "npm run lint - TypeScript strict mode passes",
+    "npm run test - all tests pass including new share service tests",
+    "Manual: Save a trip, click Share, verify link is copied and /trip/:shareId loads in new incognito tab",
+    "Manual: Click Export PDF, verify download starts and PDF contains itinerary + map",
+    "Manual: Click Add to Calendar, verify .ics downloads and imports correctly to Google Calendar",
+    "Manual: Click Share on mobile device, verify native share sheet appears",
+    "Manual: Click Revoke on shared trip, verify share link becomes inaccessible"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}
