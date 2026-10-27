@@ -1,4 +1,18 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
+
+// Mock Supabase before any imports that transitively touch it
+vi.mock('../lib/supabase', () => ({
+  supabase: {
+    auth: { getUser: vi.fn(), getSession: vi.fn().mockResolvedValue({ data: { session: null } }) },
+    from: vi.fn()
+  }
+}));
+
+// Mock attractionsService to prevent supabase from being loaded at module level
+vi.mock('../services/attractionsService', () => ({
+  fetchAIAttractions: vi.fn().mockResolvedValue([])
+}));
+
 import {
   validateTripInput,
   generateTripPlan,
