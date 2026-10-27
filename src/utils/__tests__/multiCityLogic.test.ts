@@ -1,4 +1,18 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+
+// Mock Supabase before any imports
+vi.mock('../../lib/supabase', () => ({
+  supabase: {
+    auth: { getUser: vi.fn() },
+    from: vi.fn()
+  }
+}));
+
+// Mock attractionsService
+vi.mock('../../services/attractionsService', () => ({
+  fetchAIAttractions: vi.fn()
+}));
+
 import { generateMultiCityTrip } from '../multiCityLogic';
 import * as plannerLogic from '../plannerLogic';
 
